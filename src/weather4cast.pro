@@ -1,9 +1,20 @@
 TEMPLATE = app
 
-QT += qml quick
+QT += qml quick webengine positioning network
 CONFIG += c++11
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    location/places.cpp \
+    location/positioning.cpp \
+    weather/currentweather.cpp \
+    weather/forecast.cpp \
+    weather/weather.cpp \
+    weather/weathermanager.cpp \
+    testclass.cpp \
+    location/locationmanager.cpp \
+    weather/forecastmodel.cpp \
+    location/place.cpp
+
 
 RESOURCES += qml.qrc
 
@@ -28,3 +39,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    location/places.h \
+    location/positioning.h \
+    weather/currentweather.h \
+    weather/forecast.h \
+    weather/weather.h \
+    weather/weathermanager.h \
+    testclass.h \
+    utils.h \
+    location/locationmanager.h \
+    weather/forecastmodel.h \
+    location/place.h
