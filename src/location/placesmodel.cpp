@@ -54,6 +54,7 @@ QVariant PlacesModel::data(const QModelIndex &index, int role) const {
 }
 
 void PlacesModel::updated() {
+    emit layoutAboutToBeChanged();
     placeList.clear();
     placeList.append(NULL);
 
@@ -65,4 +66,5 @@ void PlacesModel::updated() {
     }
 
     placeList.append(map.values());
+    emit layoutChanged();
 }

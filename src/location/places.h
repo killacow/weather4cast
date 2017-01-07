@@ -6,6 +6,7 @@
 #include <QGeoCoordinate>
 
 class Place;
+class FileParser;
 
 class Places : public QObject
 {
@@ -13,7 +14,7 @@ class Places : public QObject
 public:
     explicit Places(QObject *parent = 0);
 
-    bool readLocalFile();
+    void readLocalFile();
     void clear();
 
     QHash<int, Place *> getPlaces() const;
@@ -23,6 +24,10 @@ signals:
 
 protected:
     QHash<int, Place *> places;
+    FileParser *fileParser;
+
+protected slots:
+    void done(bool error, QHash<int, Place *> *places);
 };
 
 #endif // PLACES_H
