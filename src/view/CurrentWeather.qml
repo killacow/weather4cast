@@ -4,10 +4,10 @@ import QtQml 2.2
 Item {
     property string cityName: currentWeather.cityName
     property string cityCountry: currentWeather.cityCountry
-//    property date citySunRise: currentWeather.citySunRise
-//    property date citySunSet: new Date()
+    property date citySunRise: currentWeather.citySunRise
+    property date citySunSet: currentWeather.citySunSet
     property double visibilityValue: currentWeather.visibilityValue
-//    property date lastupdateValue: new Date()
+    property date lastupdateValue: currentWeather.lastupdateValue
 
     Column {
 
@@ -15,19 +15,13 @@ Item {
             text: "Place: " + cityName + ", " + cityCountry
         }
 
-//        Text {
-//            text: "Sunrise time " + citySunRise.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
-//        }
+        Text {
+            text: "Sunrise time " + citySunRise.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+        }
 
-//        Text {
-////            text: "Sunset  time " + citySunSet
-//        }
-
-
-
-//        Text {
-////            text: "Last update " + lastupdateValue
-//        }
+        Text {
+            text: "Sunset  time " + citySunSet.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+        }
 
         Weather {
 //            isInit: currentWeather.isInit
@@ -48,6 +42,10 @@ Item {
 
         Text {
             text: "Visibility " + visibilityValue.toFixed(0) + " m"
+        }
+
+        Text {
+            text: "Last update " + lastupdateValue.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
         }
 
     }

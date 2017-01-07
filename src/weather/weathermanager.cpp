@@ -106,8 +106,12 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
             } else if (xml.name() == "country") {
                 currentWeather->cityCountry = xml.readElementText();
             } else if (xml.name() == "sun") {
-                currentWeather->citySunRise = QDateTime::fromString(xml.attributes().value("rise").toString(), "yyyy-MM-ddTHH:mm:ss");
-                currentWeather->citySunSet = QDateTime::fromString(xml.attributes().value("set").toString(), "yyyy-MM-ddTHH:mm:ss");
+                QDateTime dt = QDateTime::fromString(xml.attributes().value("rise").toString(), "yyyy-MM-ddTHH:mm:ss");
+                dt.setTimeSpec(Qt::UTC);
+                currentWeather->citySunRise = dt.toLocalTime();
+                dt = QDateTime::fromString(xml.attributes().value("set").toString(), "yyyy-MM-ddTHH:mm:ss");
+                dt.setTimeSpec(Qt::UTC);
+                currentWeather->citySunSet = dt.toLocalTime();
             } else if (xml.name() == "temperature") {
                 currentWeather->temperatureValue = xml.attributes().value("value").toDouble(&ok);
                 currentWeather->temperatureMin = xml.attributes().value("min").toDouble(&ok);
@@ -138,7 +142,9 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
                 currentWeather->weatherValue = xml.attributes().value("value").toString();
                 currentWeather->weatherIcon = xml.attributes().value("icon").toString();
             } else if (xml.name() == "lastupdate") {
-                currentWeather->lastupdateValue = QDateTime::fromString(xml.attributes().value("value").toString(), "yyyy-MM-ddTHH:mm:ss");
+                QDateTime dt = QDateTime::fromString(xml.attributes().value("value").toString(), "yyyy-MM-ddTHH:mm:ss");
+                dt.setTimeSpec(Qt::UTC);
+                currentWeather->lastupdateValue = dt.toLocalTime();
             }
         }
     }
@@ -177,8 +183,12 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
             } else if (xml.name() == "calctime") {
                 forecast->metaCalctime = xml.readElementText().toDouble(&ok);
             } else if (xml.name() == "sun") {
-                forecast->sunRise = QDateTime::fromString(xml.attributes().value("rise").toString(), "yyyy-MM-ddTHH:mm:ss");
-                forecast->sunSet = QDateTime::fromString(xml.attributes().value("set").toString(), "yyyy-MM-ddTHH:mm:ss");
+                QDateTime dt = QDateTime::fromString(xml.attributes().value("rise").toString(), "yyyy-MM-ddTHH:mm:ss");
+                dt.setTimeSpec(Qt::UTC);
+                forecast->sunRise = dt.toLocalTime();
+                dt = QDateTime::fromString(xml.attributes().value("set").toString(), "yyyy-MM-ddTHH:mm:ss");
+                dt.setTimeSpec(Qt::UTC);
+                forecast->sunSet = dt.toLocalTime();
             } else if (xml.name() == "forecast") {
 
 //                int forecastIndex = 0;
@@ -186,12 +196,12 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
                     xml.readNext();
                     if (xml.isStartElement()) {
                         if (xml.name() == "time") {
-//                            if (forecastIndex >= forecast->forecastTimeFrom.size()) {
-//                                qDebug() << "too many forecasts!";
-//                                break;
-//                            }
-                            forecast->forecastTimeFrom.append(QDateTime::fromString(xml.attributes().value("from").toString(), "yyyy-MM-ddTHH:mm:ss"));
-                            forecast->forecastTimeTo.append(QDateTime::fromString(xml.attributes().value("to").toString(), "yyyy-MM-ddTHH:mm:ss"));
+                            QDateTime dt = QDateTime::fromString(xml.attributes().value("from").toString(), "yyyy-MM-ddTHH:mm:ss");
+                            dt.setTimeSpec(Qt::UTC);
+                            forecast->forecastTimeFrom.append(dt.toLocalTime());
+                            dt = QDateTime::fromString(xml.attributes().value("to").toString(), "yyyy-MM-ddTHH:mm:ss");
+                            dt.setTimeSpec(Qt::UTC);
+                            forecast->forecastTimeTo.append(dt.toLocalTime());
                             Weather *weather = new Weather(forecast);
 //                            ++forecastIndex;
                             while (!xml.atEnd() && !(xml.isEndElement() && (xml.name() == "time"))) {

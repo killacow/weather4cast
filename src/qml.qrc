@@ -5,5 +5,6 @@
         <file>view/PlaceList.qml</file>
         <file>view/Weather.qml</file>
         <file>view/CurrentWeather.qml</file>
+        <file>view/Forecast.qml</file>
     </qresource>
 </RCC>
