@@ -2,22 +2,27 @@
 #define PLACES_H
 
 #include <QObject>
-#include <QList>
+#include <QHash>
 #include <QGeoCoordinate>
+
+class Place;
 
 class Places : public QObject
 {
     Q_OBJECT
 public:
     explicit Places(QObject *parent = 0);
+
     bool readLocalFile();
     void clear();
 
+    QHash<int, Place *> getPlaces() const;
+
+signals:
+    void updated();
+
 protected:
-    QList<int> ids;
-    QStringList names;
-    QStringList countries;
-    QList<QGeoCoordinate> locations;
+    QHash<int, Place *> places;
 };
 
 #endif // PLACES_H

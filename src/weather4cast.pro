@@ -13,7 +13,9 @@ SOURCES += main.cpp \
     testclass.cpp \
     location/locationmanager.cpp \
     weather/forecastmodel.cpp \
-    location/place.cpp
+    location/place.cpp \
+    location/placesmodel.cpp \
+    location/fileparser.cpp
 
 
 RESOURCES += qml.qrc
@@ -51,4 +53,6 @@ HEADERS += \
     utils.h \
     location/locationmanager.h \
     weather/forecastmodel.h \
-    location/place.h
+    location/place.h \
+    location/placesmodel.h \
+    location/fileparser.h

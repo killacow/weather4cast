@@ -23,8 +23,11 @@ Item {
         Connections {
             // Подписываемся на сигнал locationUpdated, посылаемый объектом-locationManager.
             target: locationManager
-            onLocationUpdated: {
+//            onCurrentPlaceUpdated:
+            onLocationUpdated:
+            {
                 // При поступлении сигнала получаем из его параметров широту и долготу и перемещаем область видимости карты методом setView в map.html.
+//                webEngineView.runJavaScript("setView(%1, %2, %3);".arg(currentPlace.coord.latitude).arg(currentPlace.coord.longitude).arg(defaultScale))
                 webEngineView.runJavaScript("setView(%1, %2, %3);".arg(location.latitude).arg(location.longitude).arg(defaultScale))
             }
         }

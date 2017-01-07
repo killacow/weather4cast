@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>view/main.qml</file>
         <file>view/Map.qml</file>
+        <file>view/PlaceList.qml</file>
     </qresource>
 </RCC>
