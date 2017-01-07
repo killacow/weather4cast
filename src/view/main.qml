@@ -15,8 +15,12 @@ Window {
 //        height: parent.height
 //    }
 
-    CurrentWeather {
-        anchors.fill: parent
+//    CurrentWeather {
+//        anchors.fill: parent
+//    }
+
+    Forecast {
+        anchors.fill:parent
     }
 
 //    PlaceList {

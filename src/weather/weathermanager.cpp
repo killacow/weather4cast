@@ -2,6 +2,7 @@
 #include "weather.h"
 #include "currentweather.h"
 #include "forecast.h"
+#include "forecastmodel.h"
 #include "utils.h"
 
 // http://api.openweathermap.org/data/2.5/forecast?q=London,us&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03
@@ -14,6 +15,7 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent) {
 
     currentWeather = new CurrentWeather(this);
     forecast = new Forecast(this);
+    forecastModel = new ForecastModel(forecast, this);
 }
 
 QGeoCoordinate WeatherManager::getLocation() const {
@@ -158,6 +160,8 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
 bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forecast) {
     // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
 
+//    forecastModel->raiseLayoutAboutToBeChanged();
+
     forecast->clear();
 
     QXmlStreamReader xml(xmlData);
@@ -250,6 +254,10 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
             }
         }
     }
+
+//    forecastModel->rowCount()
+//    forecastModel->raiseLayoutChanged();
+
     if (!xml.hasError()) { // Сюда добавится обработка ошибок
         return true;
     } else {
@@ -284,7 +292,6 @@ void WeatherManager::replyCurrentWeather() {
         currentWeather->isInit = true;
         emit responseCurrenWeather(false, currentWeather);
         emit currentWeather->updated();
-        emit currentWeather->updated_inh();
     } else {
         qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseCurrenWeather(true, currentWeather);
@@ -295,8 +302,11 @@ void WeatherManager::replyCurrentWeather() {
 void WeatherManager::replyForecast() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply->error()) {
+        emit forecastModel->layoutAboutToBeChanged();
         parseForecastXml(reply->readAll(), forecast);
+        emit forecastModel->layoutChanged();
         emit responseForecast(false, forecast);
+        emit forecast->updated();
     } else {
         qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseForecast(true, forecast);

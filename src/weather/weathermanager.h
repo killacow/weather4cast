@@ -7,6 +7,7 @@
 
 class CurrentWeather;
 class Forecast;
+class ForecastModel;
 
 class WeatherManager : public QObject
 {
@@ -26,6 +27,8 @@ public:
     bool requestForecast(const QGeoCoordinate &location);
     static bool parseForecastXml(const QByteArray &xmlData, Forecast *forecast);
     Forecast *getForecast() const;
+
+    ForecastModel *forecastModel;
 
     bool requestRefresh();
 

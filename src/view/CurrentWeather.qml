@@ -16,11 +16,11 @@ Item {
         }
 
         Text {
-            text: "Sunrise time " + citySunRise.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+            text: "Sunrise time: " + citySunRise.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
         }
 
         Text {
-            text: "Sunset  time " + citySunSet.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+            text: "Sunset  time: " + citySunSet.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
         }
 
         Weather {
@@ -41,11 +41,11 @@ Item {
         }
 
         Text {
-            text: "Visibility " + visibilityValue.toFixed(0) + " m"
+            text: "Visibility: " + visibilityValue.toFixed(0) + " m"
         }
 
         Text {
-            text: "Last update " + lastupdateValue.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+            text: "Last update: " + lastupdateValue.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
         }
 
     }

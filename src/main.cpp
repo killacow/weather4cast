@@ -13,6 +13,8 @@
 
 #include "weather/weathermanager.h"
 #include "weather/currentweather.h"
+#include "weather/forecast.h"
+#include "weather/forecastmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -40,6 +42,8 @@ int main(int argc, char *argv[])
 
     WeatherManager weatherManager;
     CurrentWeather *currentWeather = weatherManager.getCurrentWeather();
+    Forecast *forecast = weatherManager.getForecast();
+    ForecastModel *forecastModel = weatherManager.forecastModel;
 
 
     QtWebEngine::initialize();
@@ -48,10 +52,13 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("locationManager", &locationManager);
     engine.rootContext()->setContextProperty("placesModel", placesModel);
     engine.rootContext()->setContextProperty("currentWeather", currentWeather);
+    engine.rootContext()->setContextProperty("forecast", forecast);
+    engine.rootContext()->setContextProperty("forecastModel", forecastModel);
     engine.load(QUrl(QStringLiteral("qrc:/view/main.qml")));
 
 //    locationManager.setCurrentPlace(LocationManager::autoLocation);
     weatherManager.requestCurrenWeather(QGeoCoordinate(58, 56));
+    weatherManager.requestForecast(QGeoCoordinate(58, 56));
 
     return app.exec();
 }
