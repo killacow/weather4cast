@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick webengine positioning network
+QT += qml quick webengine positioning network charts
 CONFIG += c++11
 
 SOURCES += main.cpp \
