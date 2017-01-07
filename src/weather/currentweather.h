@@ -10,12 +10,18 @@
 class CurrentWeather : public Weather
 {
     Q_OBJECT
+    Q_PROPERTY(QString cityName MEMBER cityName NOTIFY updated_inh)
+    Q_PROPERTY(QString cityCountry MEMBER cityCountry NOTIFY updated_inh)
+    Q_PROPERTY(QDateTime citySunRise MEMBER citySunRise NOTIFY updated_inh)
+    Q_PROPERTY(QDateTime citySunSet MEMBER citySunSet NOTIFY updated_inh)
+    Q_PROPERTY(double visibilityValue MEMBER visibilityValue NOTIFY updated_inh)
+    Q_PROPERTY(QDateTime lastupdateValue MEMBER lastupdateValue NOTIFY updated_inh)
 public:
     explicit CurrentWeather(QObject *parent = 0);
     explicit CurrentWeather(const CurrentWeather &other, QObject *parent = 0);
     CurrentWeather &operator=(const CurrentWeather &other);
 
-    bool isInit;
+//    bool isInit;
 
     int cityId;
     QString cityName;
@@ -54,6 +60,9 @@ public:
 //    QString weatherIcon;
 
     QDateTime lastupdateValue;
+
+signals:
+    void updated_inh();
 
 };
 

@@ -3,5 +3,7 @@
         <file>view/main.qml</file>
         <file>view/Map.qml</file>
         <file>view/PlaceList.qml</file>
+        <file>view/Weather.qml</file>
+        <file>view/CurrentWeather.qml</file>
     </qresource>
 </RCC>

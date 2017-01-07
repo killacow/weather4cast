@@ -13,6 +13,7 @@ class Places : public QObject
     Q_OBJECT
 public:
     explicit Places(QObject *parent = 0);
+    ~Places();
 
     void readLocalFile();
     void clear();

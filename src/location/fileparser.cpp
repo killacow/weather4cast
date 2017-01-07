@@ -19,11 +19,12 @@ void FileParser::run() {
     // Открываем файл
     QFile file(fileName);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        while (!file.atEnd()) { // FIXME: Чтение файла вынести в отдельный поток.
+        while (!file.atEnd()) {
+            // TODO: вынести метод-парсер отдельно и сделать на него тест.
             // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
             QJsonDocument jsonDocument = QJsonDocument::fromJson(file.readLine());
             QJsonObject jsonObjectMain = jsonDocument.object();
-            Place *place = new Place();
+            Place *place = new Place(); // no memory leak
             place->id = jsonObjectMain.value("_id").toInt();
             place->name = jsonObjectMain.value("name").toString();
             place->country = jsonObjectMain.value("country").toString();

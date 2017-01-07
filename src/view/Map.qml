@@ -23,13 +23,31 @@ Item {
         Connections {
             // Подписываемся на сигнал locationUpdated, посылаемый объектом-locationManager.
             target: locationManager
-//            onCurrentPlaceUpdated:
+            //            onCurrentPlaceUpdated:
             onLocationUpdated:
             {
-                // При поступлении сигнала получаем из его параметров широту и долготу и перемещаем область видимости карты методом setView в map.html.
-//                webEngineView.runJavaScript("setView(%1, %2, %3);".arg(currentPlace.coord.latitude).arg(currentPlace.coord.longitude).arg(defaultScale))
-                webEngineView.runJavaScript("setView(%1, %2, %3);".arg(location.latitude).arg(location.longitude).arg(defaultScale))
+                //if (webEngineView.loading == false)
+                {
+                    // При поступлении сигнала получаем из его параметров широту и долготу и перемещаем область видимости карты методом setView в map.html.
+                    //                webEngineView.runJavaScript("setView(%1, %2, %3);".arg(currentPlace.coord.latitude).arg(currentPlace.coord.longitude).arg(defaultScale))
+                    webEngineView.runJavaScript("setView(%1, %2, %3);".arg(location.latitude).arg(location.longitude).arg(defaultScale))
+                    //placesModel.selectPlace(list.currentIndex);//
+                }
             }
         }
+
+//        onLoadingChanged: {
+//            console.log("loadRequest" + loadRequest.status)
+//            if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
+//                placesModel.selectPlace(list.currentIndex);
+//            }
+//        }
+
+
+
+//        Component.onCompleted: {
+//            webEngineView.url = fileName;
+//            console.log("Nested Completed Running!")
+//        }
     }
 }

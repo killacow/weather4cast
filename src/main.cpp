@@ -11,6 +11,9 @@
 #include "location/locationmanager.h"
 #include "location/place.h"
 
+#include "weather/weathermanager.h"
+#include "weather/currentweather.h"
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -33,8 +36,10 @@ int main(int argc, char *argv[])
     //QObject::connect(&p, SIGNAL(responseRefreshLocation(bool,QGeoCoordinate)), &t, SLOT(responseRefreshLocation(bool,QGeoCoordinate)));
 
     LocationManager locationManager;
-    locationManager.setCurrentPlace(LocationManager::autoLocation);
     PlacesModel *placesModel = locationManager.getPlacesModel();
+
+    WeatherManager weatherManager;
+    CurrentWeather *currentWeather = weatherManager.getCurrentWeather();
 
 
     QtWebEngine::initialize();
@@ -42,7 +47,11 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
     engine.rootContext()->setContextProperty("locationManager", &locationManager);
     engine.rootContext()->setContextProperty("placesModel", placesModel);
+    engine.rootContext()->setContextProperty("currentWeather", currentWeather);
     engine.load(QUrl(QStringLiteral("qrc:/view/main.qml")));
+
+//    locationManager.setCurrentPlace(LocationManager::autoLocation);
+    weatherManager.requestCurrenWeather(QGeoCoordinate(58, 56));
 
     return app.exec();
 }

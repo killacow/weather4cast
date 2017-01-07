@@ -99,6 +99,7 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
             if (xml.name() == "city") {
                 currentWeather->cityId = xml.attributes().value("id").toInt(&ok);
                 currentWeather->cityName = xml.attributes().value("name").toString();
+//                qDebug() << currentWeather->cityName;
             } else if (xml.name() == "coord") {
                 currentWeather->cityCoord.setLongitude(xml.attributes().value("lon").toDouble(&ok));
                 currentWeather->cityCoord.setLatitude(xml.attributes().value("lat").toDouble(&ok));
@@ -270,7 +271,10 @@ void WeatherManager::replyCurrentWeather() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply->error()) {
         parseCurrentWeatherXml(reply->readAll(), currentWeather);
+        currentWeather->isInit = true;
         emit responseCurrenWeather(false, currentWeather);
+        emit currentWeather->updated();
+        emit currentWeather->updated_inh();
     } else {
         qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseCurrenWeather(true, currentWeather);

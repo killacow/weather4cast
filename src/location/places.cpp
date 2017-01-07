@@ -16,8 +16,11 @@ Places::Places(QObject *parent) : QObject(parent) {
     connect(fileParser, SIGNAL(done(bool,QHash<int,Place*>*)), this, SLOT(done(bool,QHash<int,Place*>*)));
 }
 
+Places::~Places() {
+    clear();
+}
+
 void Places::readLocalFile() {
-//    clear();
     fileParser->parseFile("D:/Downloads/city.list.json/city.list.json"); // TODO: Положить файл рядом с приложением, имя файла и путь - в ini.
 }
 
@@ -32,8 +35,9 @@ QHash<int, Place *> Places::getPlaces() const {
 
 void Places::done(bool error, QHash<int, Place *> *places) {
     if (!error) {
+        clear();
         this->places = *places;
-        qDebug() << "places read";
+        qDebug() << "places are read";
         emit updated();
     }
 }

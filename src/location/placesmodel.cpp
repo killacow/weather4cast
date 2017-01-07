@@ -3,11 +3,14 @@
 #include "places.h"
 #include "locationmanager.h"
 
+// TODO: Нужно отладить механизм обновления позиции.
+
 PlacesModel::PlacesModel(LocationManager *locationManager, Places *places, QObject *parent)
     : QAbstractListModel(parent)
     , locationManager(locationManager)
     , places(places){
     connect(places, SIGNAL(updated()), this, SLOT(updated()));
+    placeList.append(NULL);
 }
 
 void PlacesModel::selectPlace(int index) {

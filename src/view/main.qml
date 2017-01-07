@@ -8,22 +8,21 @@ Window {
     height: 480
     title: qsTr("weather4cast") // TODO: Ярлык
 
-    Map {
-        id: map
-        width: 300
-        anchors.left: parent.left
-        height: parent.height
-    }
-
-//    ComboBox {
-//        model: placesModel
-//        textRole: "display"
+//    Map {
+//        id: map
+//        width: 500
+//        anchors.left: parent.left
+//        height: parent.height
 //    }
 
-    PlaceList {
-        anchors.left: map.right
-        height: parent.height
-//        anchors.fill: parent
+    CurrentWeather {
+        anchors.fill: parent
     }
+
+//    PlaceList {
+//        anchors.left: map.right
+//        anchors.right: parent.right
+//        height: parent.height
+//    }
 
 }
