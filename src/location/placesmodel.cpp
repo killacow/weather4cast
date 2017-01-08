@@ -9,6 +9,7 @@ PlacesModel::PlacesModel(LocationManager *locationManager, Places *places, QObje
     : QAbstractListModel(parent)
     , locationManager(locationManager)
     , places(places){
+//    proxyModel = new QSortFilterProxyModel(this);
     connect(places, SIGNAL(updated()), this, SLOT(updated()));
     placeList.append(NULL);
 }
@@ -54,6 +55,20 @@ QVariant PlacesModel::data(const QModelIndex &index, int role) const {
     default:
         return QVariant();
     }
+}
+
+int PlacesModel::getIndexByText(QString text) {
+    if (text.isEmpty()) {
+        return 0;
+    }
+    for (int i = 0; i < placeList.size(); ++i) {
+        if (placeList.at(i)) {
+            if (placeList.at(i)->name.startsWith(text, Qt::CaseInsensitive)) {
+                return i;
+            }
+        }
+    }
+    return 0;
 }
 
 void PlacesModel::updated() {

@@ -8,29 +8,43 @@ import QtQuick.Layouts 1.3
 
 GroupBox {
     title: "Places"
-    ScrollView {
+    ColumnLayout {
         anchors.fill: parent
-        ListView {
-            id: list
-            model: placesModel
-            delegate: Item {
-                width: list.width
-                height: 20
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: display
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: list.currentIndex = index
-                }
+
+        TextField {
+            Layout.fillWidth: true
+            placeholderText: qsTr("Search")
+            onTextChanged: {
+                list.positionViewAtIndex(placesModel.getIndexByText(text), ListView.Beginning)
             }
-            highlight: Rectangle {
-                color: "skyblue"
-            }
-            highlightMoveVelocity: -1
-            onCurrentItemChanged: {
-                placesModel.selectPlace(list.currentIndex);
+        }
+
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+            ListView {
+                id: list
+                model: placesModel
+                delegate: Item {
+                    width: list.width
+                    height: 20
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: display
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            list.currentIndex = index
+                            placesModel.selectPlace(list.currentIndex);
+                        }
+                    }
+                }
+                highlight: Rectangle {
+                    color: "skyblue"
+                }
+                highlightMoveVelocity: -1
             }
         }
     }

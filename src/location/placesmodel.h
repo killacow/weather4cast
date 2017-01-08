@@ -19,6 +19,8 @@ public:
     virtual int rowCount(const QModelIndex &parent) const;
     virtual QVariant data(const QModelIndex &index, int role) const;
 
+    Q_INVOKABLE int getIndexByText(QString text);
+
 signals:
 
 public slots:
@@ -31,6 +33,8 @@ protected:
     Places *places;
 
     QList<Place *> placeList;
+
+//    QSortFilterProxyModel *proxyModel;
 
 };
 #endif // PLACESMODEL_H
