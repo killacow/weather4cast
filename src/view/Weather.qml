@@ -1,4 +1,6 @@
 import QtQuick 2.5
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.2
 
 //Item {
 
@@ -8,31 +10,40 @@ import QtQuick 2.5
 //    height: 200
 //    width: 200
 
-    Column {
+GroupBox {
+    title: "Weather"
+    Layout.fillHeight: true
+    Layout.fillWidth: true
+
+    property bool isInit: true
+
+    property string weatherValue: ""
+    property string weatherIcon: ""
+
+    property double temperatureValue: 0
+    property double temperatureMin: 0
+    property double temperatureMax: 0
+
+    property string windDirectionName: ""
+    property double windSpeedValue: 0
+
+    property double humidityValue: 0
+
+    property double pressureValue: 0
+
+    property string precipitationMode: ""
+    property double precipitationValue: 0
+
+    property double cloudsValue: 0
+    property string cloudsName: ""
+
+    ColumnLayout {
+
+        anchors.fill: parent
 
         // TODO: Добавить единицы измерения из XML
 
-        property bool isInit: true
 
-        property string weatherValue: ""
-        property string weatherIcon: ""
-
-        property double temperatureValue: 0
-        property double temperatureMin: 0
-        property double temperatureMax: 0
-
-        property string windDirectionName: ""
-        property double windSpeedValue: 0
-
-        property double humidityValue: 0
-
-        property double pressureValue: 0
-
-        property string precipitationMode: ""
-        property double precipitationValue: 0
-
-        property double cloudsValue: 0
-        property string cloudsName: ""
 
         //opacity: (isInit == true) ? 1 : 0
 
@@ -79,4 +90,4 @@ import QtQuick 2.5
         }
 
     }
-//}
+}

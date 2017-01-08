@@ -9,10 +9,17 @@ Column {
     property string locationCountry: forecast.locationCountry
 
     Text {
+        text: "Forecast"
+    }
+
+    Text {
         text: "Place: " + locationName + ", " + locationCountry
     }
 
     ScrollView {
+
+        height: 300
+
         ListView {
             //width: 100; height: 100
             //        anchors.fill: parent
@@ -22,8 +29,14 @@ Column {
                 height: 200
                 width: 200
                 Column {
-                    Text { text: model.forecastTimeFrom.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss") }
-                    Text { text: model.forecastTimeTo.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss") }
+
+                    Text {
+                        text: "From: " + model.forecastTimeFrom.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+                    }
+
+                    Text {
+                        text: "To: " + model.forecastTimeTo.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
+                    }
 
                     Weather {
                         weatherValue: model.weatherValue

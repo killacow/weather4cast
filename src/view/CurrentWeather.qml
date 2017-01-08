@@ -1,7 +1,11 @@
 import QtQuick 2.0
 import QtQml 2.2
+import QtQuick.Layouts 1.3
+import QtQuick.Controls 1.2
 
-Item {
+GroupBox {
+    title: "Current weather"
+
     property string cityName: currentWeather.cityName
     property string cityCountry: currentWeather.cityCountry
     property date citySunRise: currentWeather.citySunRise
@@ -9,7 +13,14 @@ Item {
     property double visibilityValue: currentWeather.visibilityValue
     property date lastupdateValue: currentWeather.lastupdateValue
 
-    Column {
+//    Layout.fillWidth: true
+//    Layout.fillHeight: true
+
+    ColumnLayout {
+
+
+
+        anchors.fill: parent
 
         Text {
             text: "Place: " + cityName + ", " + cityCountry
