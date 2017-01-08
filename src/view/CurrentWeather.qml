@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.2
 
 GroupBox {
-    title: "Current weather"
+    title: "Current weather: " + cityName + ", " + cityCountry + "   "
+
 
     property string cityName: currentWeather.cityName
     property string cityCountry: currentWeather.cityCountry
@@ -22,9 +23,9 @@ GroupBox {
 
         anchors.fill: parent
 
-        Text {
-            text: "Place: " + cityName + ", " + cityCountry
-        }
+//        Text {
+//            text: "Place: " + cityName + ", " + cityCountry
+//        }
 
         Text {
             text: "Sunrise time: " + citySunRise.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")

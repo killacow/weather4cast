@@ -12,22 +12,19 @@ Window {
     height: 480
     title: qsTr("weather4cast") // TODO: Ярлык
 
-//    ColumnLayout
-//    {
+    ColumnLayout
+    {
+        anchors.fill: parent
 
-    CurrentWeather {
-//        id: cur
-//        height: 250
-//        anchors.top: parent.top
+        CurrentWeather {
+
+        }
+
+        Forecast {
+            Layout.fillHeight: true
+        }
+
     }
-
-//    Forecast {
-//        id: fore
-//        anchors.top: cur.bottom
-//        anchors.bottom: parent.bottom
-//    }
-
-//    }
 
 //    Map {
 //        id: map

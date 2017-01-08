@@ -1,44 +1,36 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQml 2.2
+import QtQuick.Layouts 1.3
 
 
-Column {
+GroupBox {
+    title: "Forecast: " + locationName + ", " + locationCountry
 
     property string locationName: forecast.locationName
     property string locationCountry: forecast.locationCountry
 
-    Text {
-        text: "Forecast"
-    }
+    Layout.fillHeight: true
+    Layout.fillWidth: true
 
-    Text {
-        text: "Place: " + locationName + ", " + locationCountry
-    }
+    ColumnLayout {
 
-    ScrollView {
+        anchors.fill: parent
 
-        height: 300
+        ScrollView {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            ListView {
+                //                anchors.fill: parent
+                model: forecastModel
+                delegate:
+                    //                    GroupBox {
 
-        ListView {
-            //width: 100; height: 100
-            //        anchors.fill: parent
-
-            model: forecastModel
-            delegate: Rectangle {
-                height: 200
-                width: 200
-                Column {
-
-                    Text {
-                        text: "From: " + model.forecastTimeFrom.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
-                    }
-
-                    Text {
-                        text: "To: " + model.forecastTimeTo.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm:ss")
-                    }
+//                    ColumnLayout {
+//                    anchors.fill: parent
 
                     Weather {
+                        title: model.forecastTimeFrom.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm") + " - " + model.forecastTimeTo.toLocaleString(Qt.locale(), "dd.MM.yyyy hh:mm") + "   "
                         weatherValue: model.weatherValue
                         weatherIcon: model.weatherIcon
                         temperatureValue: model.temperatureValue
@@ -53,9 +45,7 @@ Column {
                         cloudsValue: model.cloudsValue
                         cloudsName: model.cloudsName
                     }
-
-                }
-
+//                }
             }
         }
     }
