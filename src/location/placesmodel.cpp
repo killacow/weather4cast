@@ -15,7 +15,7 @@ PlacesModel::PlacesModel(LocationManager *locationManager, Places *places, QObje
 }
 
 void PlacesModel::selectPlace(int index) {
-    qDebug() << "place" << index;
+//    qDebug() << "place" << index;
     int id = LocationManager::autoLocation;
     if (index == 0) {
 

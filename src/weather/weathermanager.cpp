@@ -36,7 +36,7 @@ void WeatherManager::currentPlaceUpdated(const Place &currentPlace) {
         requestCurrenWeather(currentPlace.id);
         requestForecast(currentPlace.id);
     }
-    qDebug() << "update req";
+//    qDebug() << "update req";
 }
 
 void WeatherManager::timerEvent(QTimerEvent *event) {
@@ -269,7 +269,7 @@ void WeatherManager::replyCurrentWeather() {
         emit responseCurrenWeather(false, currentWeather);
         emit currentWeather->updated();
     } else {
-        qDebug() << "Network error! " << reply->errorString() << POS;
+//        qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseCurrenWeather(true, currentWeather);
     }
     reply->deleteLater();
@@ -284,7 +284,7 @@ void WeatherManager::replyForecast() {
         emit responseForecast(false, forecast);
         emit forecast->updated();
     } else {
-        qDebug() << "Network error! " << reply->errorString() << POS;
+//        qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseForecast(true, forecast);
     }
     reply->deleteLater();

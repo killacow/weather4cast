@@ -1,8 +1,8 @@
-import QtQuick 2.7
+import QtQuick 2.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
-import QtCharts 2.0
 import QtQuick.Layouts 1.3
+import QtWebEngine 1.0
 
 // TODO: margins
 
