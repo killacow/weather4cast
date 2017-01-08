@@ -15,10 +15,9 @@ class Forecast : public QObject
     Q_PROPERTY(QString locationCountry MEMBER locationCountry NOTIFY updated)
 public:
     explicit Forecast(QObject *parent = 0);
-
     void clear();
 
-    bool isInit;
+//    bool isInit;
 
     QString locationName;
     QString locationCountry;

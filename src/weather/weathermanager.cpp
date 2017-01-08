@@ -6,8 +6,9 @@
 #include "../utils.h"
 #include "../location/place.h"
 #include "../location/locationmanager.h"
+#include "../settings.h"
 
-// http://api.openweathermap.org/data/2.5/forecast?q=London,us&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03
+// TODO: По всему проекту сделать нормальные геттеры/сеттеры для полей, сами поля приватными.
 
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent) {
     networkAccessManager = new QNetworkAccessManager(this);
@@ -18,7 +19,7 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent) {
     forecastModel = new ForecastModel(forecast, this);
 
     // TODO: Таймер на обновление погоды лучше заводить каждый раз после обновления.
-    startTimer(10 * 60 * 1000);   // обновление // FIXME: to ini
+    startTimer(Settings::getInstance()->value("refreshPeriodSec").toInt() * 1000); // обновление
 
 }
 
@@ -47,9 +48,9 @@ bool WeatherManager::requestCurrenWeather(int cityId) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
     }
-    QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?id=%1&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
-            .arg(QString::number(cityId));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
+    QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?id=%1&units=metric&mode=xml&appid=%2")
+            .arg(QString::number(cityId)).arg(Settings::getInstance()->value("openweathermapAppid").toString());
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address)));
     connect(reply, SIGNAL(finished()), this, SLOT(replyCurrentWeather()));
     return true;
 }
@@ -58,10 +59,11 @@ bool WeatherManager::requestCurrenWeather(const QGeoCoordinate &location) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
     }
-    QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?lat=%1&lon=%2&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
+    QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?lat=%1&lon=%2&units=metric&mode=xml&appid=%3")
             .arg(QString::number(location.latitude(), 'f'))
-            .arg(QString::number(location.longitude(), 'f'));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
+            .arg(QString::number(location.longitude(), 'f'))
+            .arg(Settings::getInstance()->value("openweathermapAppid").toString());
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address)));
     connect(reply, SIGNAL(finished()), this, SLOT(replyCurrentWeather()));
     return true;
 }
@@ -70,9 +72,10 @@ bool WeatherManager::requestForecast(int cityId) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
     }
-    QUrl address = QString("http://api.openweathermap.org/data/2.5/forecast?id=%1&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
-            .arg(QString::number(cityId));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
+    QUrl address = QString("http://api.openweathermap.org/data/2.5/forecast?id=%1&units=metric&mode=xml&appid=%2")
+            .arg(QString::number(cityId))
+            .arg(Settings::getInstance()->value("openweathermapAppid").toString());
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address)));
     connect(reply, SIGNAL(finished()), this, SLOT(replyForecast()));
     return true;
 }
@@ -81,10 +84,11 @@ bool WeatherManager::requestForecast(const QGeoCoordinate &location) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
     }
-    QUrl address = QString("http://api.openweathermap.org/data/2.5/forecast?lat=%1&lon=%2&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
+    QUrl address = QString("http://api.openweathermap.org/data/2.5/forecast?lat=%1&lon=%2&units=metric&mode=xml&appid=%3")
             .arg(QString::number(location.latitude(), 'f'))
-            .arg(QString::number(location.longitude(), 'f'));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
+            .arg(QString::number(location.longitude(), 'f'))
+            .arg(Settings::getInstance()->value("openweathermapAppid").toString());
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address)));
     connect(reply, SIGNAL(finished()), this, SLOT(replyForecast()));
     return true;
 }
@@ -261,7 +265,7 @@ void WeatherManager::replyCurrentWeather() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply->error()) {
         parseCurrentWeatherXml(reply->readAll(), currentWeather);
-        currentWeather->isInit = true;
+//        currentWeather->isInit = true;
         emit responseCurrenWeather(false, currentWeather);
         emit currentWeather->updated();
     } else {

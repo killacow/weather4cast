@@ -17,12 +17,13 @@ bool Positioning::requestRefreshLocation() {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов
         return false;
     }
-    networkAccessManager->get(QNetworkRequest(QUrl("http://ip-api.com/xml"))); // FIXME: to ini
+    networkAccessManager->get(QNetworkRequest(QUrl("http://ip-api.com/xml")));
     return true;
 }
 
 
 bool Positioning::parseLocationXML(const QByteArray &xmlData, QGeoCoordinate *location) {
+    // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
     double latitude = qQNaN();
     double longitude = qQNaN();
 

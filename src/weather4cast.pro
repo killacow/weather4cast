@@ -3,6 +3,8 @@ TEMPLATE = app
 QT += qml quick webengine positioning network charts
 CONFIG += c++11
 
+RC_FILE = app.rc
+
 SOURCES += main.cpp \
     location/places.cpp \
     location/positioning.cpp \
@@ -10,12 +12,12 @@ SOURCES += main.cpp \
     weather/forecast.cpp \
     weather/weather.cpp \
     weather/weathermanager.cpp \
-    testclass.cpp \
     location/locationmanager.cpp \
     weather/forecastmodel.cpp \
     location/place.cpp \
     location/placesmodel.cpp \
-    location/fileparser.cpp
+    location/fileparser.cpp \
+    settings.cpp
 
 
 RESOURCES += qml.qrc
@@ -49,10 +51,10 @@ HEADERS += \
     weather/forecast.h \
     weather/weather.h \
     weather/weathermanager.h \
-    testclass.h \
     utils.h \
     location/locationmanager.h \
     weather/forecastmodel.h \
     location/place.h \
     location/placesmodel.h \
-    location/fileparser.h
+    location/fileparser.h \
+    settings.h

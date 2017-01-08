@@ -2,20 +2,12 @@ import QtQuick 2.5
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.2
 
-//Item {
-
-
-// FIXME: Значения дергаются, когда не проинициализированы
-
-//    height: 200
-//    width: 200
-
 GroupBox {
     title: "Weather"
 //    Layout.fillHeight: true
 //    Layout.fillWidth: true
 
-    property bool isInit: true
+//    property bool isInit: true
 
     property string weatherValue: ""
     property string weatherIcon: ""
@@ -50,8 +42,8 @@ GroupBox {
         Image {
             id: image
             source: weatherIcon.length > 0 ? "http://openweathermap.org/img/w/" + weatherIcon + ".png" : ""
-            width: 50
-            height: 50
+//            width: 50
+//            height: 50
         }
 
         Text {
@@ -66,7 +58,7 @@ GroupBox {
                     return d
                 }
             }
-            text: "Temperature: " + sign(temperatureValue.toFixed(0)) + " ℃ (" + sign(temperatureMin.toFixed(0)) + "..." + sign(temperatureMax.toFixed(0)) + ")" // FIXME: Кривое отображение символа градуса
+            text: "Temperature: " + sign(temperatureValue.toFixed(0)) + " °C (" + sign(temperatureMin.toFixed(0)) + "..." + sign(temperatureMax.toFixed(0)) + ")"
         }
 
         Text {

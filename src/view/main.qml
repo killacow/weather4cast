@@ -10,7 +10,7 @@ Window {
     visible: true
     width: 1000
     height: 600
-    title: qsTr("weather4cast") // FIXME: Ярлык
+    title: qsTr("weather4cast")
 
     RowLayout {
         anchors.fill: parent

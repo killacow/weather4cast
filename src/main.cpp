@@ -4,10 +4,8 @@
 #include <QQmlContext>
 #include <QtWebEngine/qtwebengineglobal.h>
 
-//#include <QtGui>
+#include "settings.h"
 
-#include "testclass.h"
-//#include "location/positioning.h"
 #include "location/placesmodel.h"
 #include "location/locationmanager.h"
 #include "location/place.h"
@@ -19,7 +17,10 @@
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
-    //    QApplication app(argc, argv);
+    //    QApplication app(argc, argv); // for qml charts
+
+    Settings settings;
+    Q_UNUSED(settings); // supress warnings
 
     LocationManager locationManager;
     PlacesModel *placesModel = locationManager.getPlacesModel();
@@ -34,7 +35,8 @@ int main(int argc, char *argv[]) {
     QtWebEngine::initialize();
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();
-    context->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
+    context->setContextProperty("mapFileName", Settings::makeAbsolutePath(Settings::getInstance()->value("mapFileName").toUrl()));
+    context->setContextProperty("mapDefaultScale", Settings::getInstance()->value("mapDefaultScale"));
     context->setContextProperty("locationManager", &locationManager);
     context->setContextProperty("placesModel", placesModel);
     context->setContextProperty("currentWeather", currentWeather);

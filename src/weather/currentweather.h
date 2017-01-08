@@ -5,7 +5,7 @@
 #include <QDateTime>
 #include "weather.h"
 
-// TODO: Сделать нормальные геттеры/сеттеры для полей.
+
 
 class CurrentWeather : public Weather
 {
