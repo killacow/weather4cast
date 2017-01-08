@@ -1,7 +1,8 @@
 TEMPLATE = app
 
-QT += qml quick webengine positioning network charts
+QT += qml quick webengine positioning network
 CONFIG += c++11
+CONFIG   -= app_bundle
 
 RC_FILE = app.rc
 

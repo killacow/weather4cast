@@ -9,7 +9,7 @@ import QtQuick.Layouts 1.3
 Window {
     visible: true
     width: 1200
-    height: 600
+    height: 800
     title: qsTr("weather4cast")
 
     RowLayout {
