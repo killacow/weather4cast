@@ -8,19 +8,34 @@ import QtQuick.Layouts 1.3
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 1000
+    height: 600
     title: qsTr("weather4cast") // TODO: Ярлык
 
-    ColumnLayout
-    {
+    RowLayout {
         anchors.fill: parent
 
-        CurrentWeather {
+        ColumnLayout {
+//            anchors.fill: parent
 
+            CurrentWeather {
+                Layout.fillWidth: true
+            }
+
+            Forecast {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
         }
 
-        Forecast {
+        PlaceList {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+
+        Map {
+            Layout.minimumWidth: 400
+            Layout.fillWidth: true
             Layout.fillHeight: true
         }
 
