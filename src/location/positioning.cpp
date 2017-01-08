@@ -14,14 +14,48 @@ const QGeoCoordinate &Positioning::getLocation() const {
 
 
 bool Positioning::requestRefreshLocation() {
-
     if (false) { // TODO: Проверить на слишком высокую частоту запросов
         return false;
     }
-
-    networkAccessManager->get(QNetworkRequest(QUrl("http://ip-api.com/xml"))); // TODO: to ini
-
+    networkAccessManager->get(QNetworkRequest(QUrl("http://ip-api.com/xml"))); // FIXME: to ini
     return true;
+}
+
+
+bool Positioning::parseLocationXML(const QByteArray &xmlData, QGeoCoordinate *location) {
+    double latitude = qQNaN();
+    double longitude = qQNaN();
+
+    QXmlStreamReader xml(xmlData);
+    while (!xml.atEnd()) {
+        xml.readNext();
+        if (xml.isStartElement()) {
+
+            if (xml.name() == "lat") {
+                bool ok = false;
+                double tmp = xml.readElementText().toDouble(&ok);
+                if (ok) {
+                    latitude = tmp;
+                }
+
+            } else if (xml.name() == "lon") {
+                bool ok = false;
+                double tmp = xml.readElementText().toDouble(&ok);
+                if (ok) {
+                    longitude = tmp;
+                }
+            }
+
+        }
+    }
+
+    if (!xml.hasError() && !qIsNaN(latitude) && !qIsNaN(longitude)) {
+        location->setLatitude(latitude);
+        location->setLongitude(longitude);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -32,41 +66,11 @@ void Positioning::clearLocation() {
 }
 
 
-// TODO: Тест на этот метод
-// TODO: Вынести чтение XML в отдельный метод.
+
 void Positioning::replyFinished(QNetworkReply *reply) {
 
     if (!reply->error()) {
-
-        double latitude = qQNaN();
-        double longitude = qQNaN();
-
-        QXmlStreamReader xml(reply->readAll());
-        while (!xml.atEnd()) {
-            xml.readNext();
-            if (xml.isStartElement()) {
-
-                if (xml.name() == "lat") {
-                    bool ok = false;
-                    double tmp = xml.readElementText().toDouble(&ok);
-                    if (ok) {
-                        latitude = tmp;
-                    }
-
-                } else if (xml.name() == "lon") {
-                    bool ok = false;
-                    double tmp = xml.readElementText().toDouble(&ok);
-                    if (ok) {
-                        longitude = tmp;
-                    }
-                }
-
-            }
-        }
-
-        if (!xml.hasError() && !qIsNaN(latitude) && !qIsNaN(longitude)) {
-            location.setLatitude(latitude);
-            location.setLongitude(longitude);
+        if (parseLocationXML(reply->readAll(), &location)) {
             emit responseRefreshLocation(false, location);
         } else {
             emit responseRefreshLocation(true, location);

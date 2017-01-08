@@ -12,6 +12,7 @@ public:
     explicit Positioning(QObject *parent = 0);
     const QGeoCoordinate &getLocation() const;
     bool requestRefreshLocation();
+    static bool parseLocationXML(const QByteArray &xmlData, QGeoCoordinate *location);
 
 signals:
     void responseRefreshLocation(bool errorFlag, const QGeoCoordinate &location);

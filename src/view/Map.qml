@@ -19,7 +19,7 @@ import QtQuick.Layouts 1.3
 //        anchors.fill: parent
         WebEngineView {
 
-            // TODO: to ini
+            // FIXME: to ini
             property string fileName: applicationDirPath +"/map.html"
             property int defaultScale: 6
 

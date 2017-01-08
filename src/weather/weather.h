@@ -25,8 +25,6 @@ class Weather : public QObject
 
 public:
     explicit Weather(QObject *parent = 0);
-    explicit Weather(const Weather &other, QObject *parent = 0);
-    Weather &operator=(const Weather &other);
 
     bool isInit;
 

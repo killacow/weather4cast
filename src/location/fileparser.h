@@ -12,11 +12,11 @@ class FileParser : public QThread
 public:
     explicit FileParser(QObject *parent = 0);
     void parseFile(const QString &fileName);
+    static bool parseJson(const QByteArray &jsonData, Place *place);
 
 signals:
     void done(bool error, QHash<int, Place *> *places);
 
-public slots:
 protected:
     QString fileName;
     QHash<int, Place *> places;

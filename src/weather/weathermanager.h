@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtNetwork>
 #include <QGeoCoordinate>
-#include "location/place.h"
+#include "../location/place.h"
 
 class CurrentWeather;
 class Forecast;

@@ -35,7 +35,6 @@ public:
 
 signals:
     void updated();
-
 };
 
 #endif // FORECAST_H

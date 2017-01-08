@@ -3,13 +3,11 @@
 #include "currentweather.h"
 #include "forecast.h"
 #include "forecastmodel.h"
-#include "utils.h"
-#include "location/place.h"
-#include "location/locationmanager.h"
+#include "../utils.h"
+#include "../location/place.h"
+#include "../location/locationmanager.h"
 
 // http://api.openweathermap.org/data/2.5/forecast?q=London,us&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03
-
-// TODO: Таймер на обновление погоды
 
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent) {
     networkAccessManager = new QNetworkAccessManager(this);
@@ -20,36 +18,13 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent) {
     forecastModel = new ForecastModel(forecast, this);
 
     // TODO: Таймер на обновление погоды лучше заводить каждый раз после обновления.
-    startTimer(10 * 60 * 1000);   // обновление // TODO: to ini
+    startTimer(10 * 60 * 1000);   // обновление // FIXME: to ini
 
 }
-
-//QGeoCoordinate WeatherManager::getLocation() const {
-//    return location;
-//}
-
-//void WeatherManager::setLocation(const QGeoCoordinate &value) {
-//    location = value;
-//}
 
 CurrentWeather *WeatherManager::getCurrentWeather() const {
     return currentWeather;
 }
-
-//bool WeatherManager::requestRefresh() {
-//    if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
-//        return false;
-//    }
-
-//    QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?lat=%1&lon=%2&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
-//            .arg(QString::number(location.latitude(), 'f'))
-//            .arg(QString::number(location.longitude(), 'f'));
-
-
-//    networkAccessManager->get(QNetworkRequest(QUrl(address))); // TODO: to ini
-
-//    return true;
-//}
 
 void WeatherManager::currentPlaceUpdated(const Place &currentPlace) {
     this->currentPlace = currentPlace;
@@ -61,7 +36,6 @@ void WeatherManager::currentPlaceUpdated(const Place &currentPlace) {
         requestForecast(currentPlace.id);
     }
     qDebug() << "update req";
-
 }
 
 void WeatherManager::timerEvent(QTimerEvent *event) {
@@ -75,7 +49,7 @@ bool WeatherManager::requestCurrenWeather(int cityId) {
     }
     QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?id=%1&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
             .arg(QString::number(cityId));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // TODO: to ini
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
     connect(reply, SIGNAL(finished()), this, SLOT(replyCurrentWeather()));
     return true;
 }
@@ -87,7 +61,7 @@ bool WeatherManager::requestCurrenWeather(const QGeoCoordinate &location) {
     QUrl address = QString("http://api.openweathermap.org/data/2.5/weather?lat=%1&lon=%2&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
             .arg(QString::number(location.latitude(), 'f'))
             .arg(QString::number(location.longitude(), 'f'));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // TODO: to ini
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
     connect(reply, SIGNAL(finished()), this, SLOT(replyCurrentWeather()));
     return true;
 }
@@ -98,7 +72,7 @@ bool WeatherManager::requestForecast(int cityId) {
     }
     QUrl address = QString("http://api.openweathermap.org/data/2.5/forecast?id=%1&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
             .arg(QString::number(cityId));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // TODO: to ini
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
     connect(reply, SIGNAL(finished()), this, SLOT(replyForecast()));
     return true;
 }
@@ -110,7 +84,7 @@ bool WeatherManager::requestForecast(const QGeoCoordinate &location) {
     QUrl address = QString("http://api.openweathermap.org/data/2.5/forecast?lat=%1&lon=%2&units=metric&mode=xml&appid=ccc14cee93ba94cebca502708f6fca03")
             .arg(QString::number(location.latitude(), 'f'))
             .arg(QString::number(location.longitude(), 'f'));
-    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // TODO: to ini
+    QNetworkReply *reply = networkAccessManager->get(QNetworkRequest(QUrl(address))); // FIXME: to ini
     connect(reply, SIGNAL(finished()), this, SLOT(replyForecast()));
     return true;
 }
@@ -125,7 +99,6 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
             if (xml.name() == "city") {
                 currentWeather->cityId = xml.attributes().value("id").toInt(&ok);
                 currentWeather->cityName = xml.attributes().value("name").toString();
-//                qDebug() << currentWeather->cityName;
             } else if (xml.name() == "coord") {
                 currentWeather->cityCoord.setLongitude(xml.attributes().value("lon").toDouble(&ok));
                 currentWeather->cityCoord.setLatitude(xml.attributes().value("lat").toDouble(&ok));
@@ -163,6 +136,7 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
                 currentWeather->visibilityValue = xml.attributes().value("value").toDouble(&ok);
             } else if (xml.name() == "precipitation") {
                 currentWeather->precipitationMode = xml.attributes().value("mode").toString();
+                currentWeather->precipitationValue = xml.attributes().value("value").toDouble(&ok);
             } else if (xml.name() == "weather") {
                 currentWeather->weatherNumber = xml.attributes().value("number").toInt(&ok);
                 currentWeather->weatherValue = xml.attributes().value("value").toString();
@@ -183,11 +157,7 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
 
 bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forecast) {
     // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
-
-//    forecastModel->raiseLayoutAboutToBeChanged();
-
     forecast->clear();
-
     QXmlStreamReader xml(xmlData);
     bool ok = true;
     while (!xml.atEnd()) {
@@ -219,7 +189,6 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
                 forecast->sunSet = dt.toLocalTime();
             } else if (xml.name() == "forecast") {
 
-//                int forecastIndex = 0;
                 while (!xml.atEnd() && !(xml.isEndElement() && (xml.name() == "forecast"))) {
                     xml.readNext();
                     if (xml.isStartElement()) {
@@ -231,7 +200,6 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
                             dt.setTimeSpec(Qt::UTC);
                             forecast->forecastTimeTo.append(dt.toLocalTime());
                             Weather *weather = new Weather(forecast);
-//                            ++forecastIndex;
                             while (!xml.atEnd() && !(xml.isEndElement() && (xml.name() == "time"))) {
                                 xml.readNext();
                                 if (xml.isStartElement()) {
@@ -278,10 +246,6 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
             }
         }
     }
-
-//    forecastModel->rowCount()
-//    forecastModel->raiseLayoutChanged();
-
     if (!xml.hasError()) { // Сюда добавится обработка ошибок
         return true;
     } else {
@@ -292,22 +256,6 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
 Forecast *WeatherManager::getForecast() const {
     return forecast;
 }
-
-//void WeatherManager::replyFinished(QNetworkReply *reply) {
-//    qDebug() << "received";
-
-//    if (!reply->error()) {
-
-//        parseCurrentWeatherXml(reply->readAll(), currentWeather);
-
-//        emit responseRefresh();
-
-//    } else {
-//        // TODO
-//    }
-
-//    reply->deleteLater();
-//}
 
 void WeatherManager::replyCurrentWeather() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());

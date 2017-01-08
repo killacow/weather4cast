@@ -25,6 +25,7 @@ QVariant ForecastModel::data(const QModelIndex &index, int role) const {
     if (row >= forecast->forecastWeather.size()) {
         return QVariant();
     }
+
     Weather *w = forecast->forecastWeather.at(row);
     switch (role) {
     case weatherValueRole:

@@ -5,7 +5,7 @@ import QtQuick.Controls 1.2
 //Item {
 
 
-// TODO: Значения дергаются, когда не проинициализированы
+// FIXME: Значения дергаются, когда не проинициализированы
 
 //    height: 200
 //    width: 200
@@ -66,7 +66,7 @@ GroupBox {
                     return d
                 }
             }
-            text: "Temperature: " + sign(temperatureValue.toFixed(0)) + " ℃ (" + sign(temperatureMin.toFixed(0)) + "..." + sign(temperatureMax.toFixed(0)) + ")" // TODO: Кривое отображение символа градуса
+            text: "Temperature: " + sign(temperatureValue.toFixed(0)) + " ℃ (" + sign(temperatureMin.toFixed(0)) + "..." + sign(temperatureMax.toFixed(0)) + ")" // FIXME: Кривое отображение символа градуса
         }
 
         Text {
@@ -82,7 +82,7 @@ GroupBox {
         }
 
         Text {
-            text: "Precipitation: " + precipitationMode + ((precipitationMode == "no") ? "" : ", " + precipitationValue.toFixed(0) + " mm")
+            text: "Precipitation: " + precipitationMode + ((precipitationMode == "no") ? "" : ((precipitationValue < 0) ? "" : ", " + precipitationValue.toFixed(0) + " mm"))
         }
 
         Text {

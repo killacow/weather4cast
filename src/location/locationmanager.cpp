@@ -1,7 +1,5 @@
 #include "locationmanager.h"
 
-// TODO: Во всех классах проверить удаляются ли контейнеры в деструкторах
-
 #include "place.h"
 #include "places.h"
 #include "placesmodel.h"

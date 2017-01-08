@@ -21,7 +21,7 @@ Places::~Places() {
 }
 
 void Places::readLocalFile() {
-    fileParser->parseFile("D:/Downloads/city.list.json/city.list.json"); // TODO: Положить файл рядом с приложением, имя файла и путь - в ini.
+    fileParser->parseFile("D:/Downloads/city.list.json/city.list.json"); // FIXME: Положить файл рядом с приложением, имя файла и путь - в ini.
 }
 
 void Places::clear() {
@@ -37,7 +37,6 @@ void Places::done(bool error, QHash<int, Place *> *places) {
     if (!error) {
         clear();
         this->places = *places;
-        qDebug() << "places are read";
         emit updated();
     }
 }
