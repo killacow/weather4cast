@@ -12,7 +12,7 @@ import QtQuick.Layouts 1.3
  */
 WebEngineView {
     id: webEngineView
-    url: mapFileName // Открываем в браузере страницу с картой.
+    url: "file:///" + mapFileName // Открываем в браузере страницу с картой.
     Connections {
         // Подписываемся на сигнал locationUpdated, посылаемый объектом-locationManager.
         target: locationManager

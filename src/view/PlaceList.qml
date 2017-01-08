@@ -2,10 +2,6 @@ import QtQuick 2.7
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
-
-// FIXME: Добавить поле поиска/фильтра
-
-
 GroupBox {
     title: "Places"
     ColumnLayout {
@@ -36,8 +32,10 @@ GroupBox {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            if (list.currentIndex == index) { // Для того чтобы обновлять местоположение даже если Пользователь кликнул по уже выбранному пункту
+                                placesModel.selectPlace(list.currentIndex);
+                            }
                             list.currentIndex = index
-                            placesModel.selectPlace(list.currentIndex);
                         }
                     }
                 }
@@ -45,6 +43,9 @@ GroupBox {
                     color: "skyblue"
                 }
                 highlightMoveVelocity: -1
+                onCurrentItemChanged: {
+                    placesModel.selectPlace(list.currentIndex);
+                }
             }
         }
     }

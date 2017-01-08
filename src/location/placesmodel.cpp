@@ -3,7 +3,7 @@
 #include "places.h"
 #include "locationmanager.h"
 
-// TODO: Нужно отладить механизм обновления позиции на карте при первом обновлении.
+// FIXME: Нужно отладить механизм обновления позиции на карте при первом обновлении.
 
 PlacesModel::PlacesModel(LocationManager *locationManager, Places *places, QObject *parent)
     : QAbstractListModel(parent)
