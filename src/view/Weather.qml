@@ -12,8 +12,8 @@ import QtQuick.Controls 1.2
 
 GroupBox {
     title: "Weather"
-    Layout.fillHeight: true
-    Layout.fillWidth: true
+//    Layout.fillHeight: true
+//    Layout.fillWidth: true
 
     property bool isInit: true
 

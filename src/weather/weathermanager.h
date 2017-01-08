@@ -4,19 +4,18 @@
 #include <QObject>
 #include <QtNetwork>
 #include <QGeoCoordinate>
+#include "location/place.h"
 
 class CurrentWeather;
 class Forecast;
 class ForecastModel;
+class Place;
 
 class WeatherManager : public QObject
 {
     Q_OBJECT
 public:
     explicit WeatherManager(QObject *parent = 0);
-
-    QGeoCoordinate getLocation() const;
-    void setLocation(const QGeoCoordinate &value);
 
     bool requestCurrenWeather(int cityId);
     bool requestCurrenWeather(const QGeoCoordinate &location);
@@ -30,25 +29,23 @@ public:
 
     ForecastModel *forecastModel;
 
-    bool requestRefresh();
-
 signals:
     void responseCurrenWeather(bool errorFlag, CurrentWeather *currentWeather);
     void responseForecast(bool errorFlag, Forecast *forecast);
 
-    void responseRefresh();
-
 public slots:
+    void currentPlaceUpdated(const Place &currentPlace);
 
 protected:
-    QGeoCoordinate location;
+    Place currentPlace;
     CurrentWeather *currentWeather;
     Forecast *forecast;
 
     QNetworkAccessManager *networkAccessManager;
 
+    void timerEvent(QTimerEvent *event);
+
 protected slots:
-    void replyFinished(QNetworkReply *reply);
     void replyCurrentWeather();
     void replyForecast();
 };
