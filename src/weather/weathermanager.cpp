@@ -10,23 +10,36 @@
 
 // TODO: По всему проекту сделать нормальные геттеры/сеттеры для полей, сами поля приватными.
 
+
+
+/**
+ * @brief Класс - менеджер погоды.
+ * @param parent Предок согласно объектной иерархии Qt.
+ */
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent) {
     networkAccessManager = new QNetworkAccessManager(this);
-//    connect(networkAccessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-
     currentWeather = new CurrentWeather(this);
     forecast = new Forecast(this);
     forecastModel = new ForecastModel(forecast, this);
-
     // TODO: Таймер на обновление погоды лучше заводить каждый раз после обновления.
-    startTimer(Settings::getInstance()->value("refreshPeriodSec").toInt() * 1000); // обновление
-
+    startTimer(Settings::getInstance()->value("refreshPeriodSec").toInt() * 1000); // Обновление погоды.
 }
 
+
+
+/**
+ * @return Текущую погоду.
+ */
 CurrentWeather *WeatherManager::getCurrentWeather() const {
     return currentWeather;
 }
 
+
+
+/**
+ * @brief Слот-обработчик сигнала об обновлени местоположения.
+ * @param currentPlace Текущее местоположение.
+ */
 void WeatherManager::currentPlaceUpdated(const Place &currentPlace) {
     this->currentPlace = currentPlace;
     if (currentPlace.id == LocationManager::autoLocation) {
@@ -36,14 +49,27 @@ void WeatherManager::currentPlaceUpdated(const Place &currentPlace) {
         requestCurrenWeather(currentPlace.id);
         requestForecast(currentPlace.id);
     }
-//    qDebug() << "update req";
 }
 
+
+
+/**
+ * @brief Обработчик срабатывания таймера.
+ * Используется для обновления погоды через заданный промежуток времени.
+ * @param event @see QTimerEvent.
+ */
 void WeatherManager::timerEvent(QTimerEvent *event) {
     Q_UNUSED(event);
     currentPlaceUpdated(currentPlace);
 }
 
+
+
+/**
+ * @brief Инициирует обновление информации о текущей погоде в месте, соответствующем идентификатору id из JSON-файла.
+ * @param cityId id из JSON-файла.
+ * @return Успешно ли прошла инициализация.
+ */
 bool WeatherManager::requestCurrenWeather(int cityId) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
@@ -55,6 +81,13 @@ bool WeatherManager::requestCurrenWeather(int cityId) {
     return true;
 }
 
+
+
+/**
+ * @brief Инициирует обновление информации о текущей погоде.
+ * @param location Координаты места.
+ * @return Успешно ли прошла инициализация.
+ */
 bool WeatherManager::requestCurrenWeather(const QGeoCoordinate &location) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
@@ -68,6 +101,13 @@ bool WeatherManager::requestCurrenWeather(const QGeoCoordinate &location) {
     return true;
 }
 
+
+
+/**
+ * @brief Инициирует обновление информации о прогнозе погоды в месте, соответствующем идентификатору id из JSON-файла.
+ * @param cityId id из JSON-файла.
+ * @return Успешно ли прошла инициализация.
+ */
 bool WeatherManager::requestForecast(int cityId) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
@@ -80,6 +120,13 @@ bool WeatherManager::requestForecast(int cityId) {
     return true;
 }
 
+
+
+/**
+ * @brief Инициирует обновление информации о прогнозе погоды.
+ * @param location Координаты места.
+ * @return Успешно ли прошла инициализация.
+ */
 bool WeatherManager::requestForecast(const QGeoCoordinate &location) {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов, проверить на корректность местоположения.
         return false;
@@ -93,6 +140,14 @@ bool WeatherManager::requestForecast(const QGeoCoordinate &location) {
     return true;
 }
 
+
+
+/**
+ * @brief Разбирает XML-данные о текущей погоде.
+ * @param xmlData Данные.
+ * @param[out] currentWeather Объект, в который будут записаны данные о текущей погоде.
+ * @return Успех/неуспех.
+ */
 bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWeather *currentWeather) {
     // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
     QXmlStreamReader xml(xmlData);
@@ -159,6 +214,14 @@ bool WeatherManager::parseCurrentWeatherXml(const QByteArray &xmlData, CurrentWe
     }
 }
 
+
+
+/**
+ * @brief Разбирает XML-данные о прогнозе погоды.
+ * @param xmlData Данные.
+ * @param[out] forecast Объект, в который будут записаны данные о прогнозе погоды.
+ * @return Успех/неуспех.
+ */
 bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forecast) {
     // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
     forecast->clear();
@@ -192,7 +255,6 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
                 dt.setTimeSpec(Qt::UTC);
                 forecast->sunSet = dt.toLocalTime();
             } else if (xml.name() == "forecast") {
-
                 while (!xml.atEnd() && !(xml.isEndElement() && (xml.name() == "forecast"))) {
                     xml.readNext();
                     if (xml.isStartElement()) {
@@ -257,24 +319,37 @@ bool WeatherManager::parseForecastXml(const QByteArray &xmlData, Forecast *forec
     }
 }
 
+
+
+/**
+ * @return Прогноз погоды.
+ */
 Forecast *WeatherManager::getForecast() const {
     return forecast;
 }
 
+
+
+/**
+ * @brief Слот-обработчик сигнала о поступлении ответа на запрос текущей погоды.
+ */
 void WeatherManager::replyCurrentWeather() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply->error()) {
         parseCurrentWeatherXml(reply->readAll(), currentWeather);
-//        currentWeather->isInit = true;
         emit responseCurrenWeather(false, currentWeather);
         emit currentWeather->updated();
     } else {
-//        qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseCurrenWeather(true, currentWeather);
     }
     reply->deleteLater();
 }
 
+
+
+/**
+ * @brief Слот-обработчик сигнала о поступлении ответа на запрос прогноза погоды.
+ */
 void WeatherManager::replyForecast() {
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     if (!reply->error()) {
@@ -284,7 +359,6 @@ void WeatherManager::replyForecast() {
         emit responseForecast(false, forecast);
         emit forecast->updated();
     } else {
-//        qDebug() << "Network error! " << reply->errorString() << POS;
         emit responseForecast(true, forecast);
     }
     reply->deleteLater();

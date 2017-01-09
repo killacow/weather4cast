@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QGeoCoordinate>
 #include <QDateTime>
-#include <QVector>
+#include <QList>
 
 class Weather;
 
@@ -16,8 +16,6 @@ class Forecast : public QObject
 public:
     explicit Forecast(QObject *parent = 0);
     void clear();
-
-//    bool isInit;
 
     QString locationName;
     QString locationCountry;

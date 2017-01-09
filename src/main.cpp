@@ -1,5 +1,4 @@
 #include <QGuiApplication>
-#include <QtWidgets/QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QtWebEngine/qtwebengineglobal.h>
@@ -17,7 +16,6 @@
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
-    //    QApplication app(argc, argv); // for qml charts
 
     Settings settings;
     Q_UNUSED(settings); // supress warnings

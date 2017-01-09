@@ -5,8 +5,6 @@
 #include <QDateTime>
 #include "weather.h"
 
-
-
 class CurrentWeather : public Weather
 {
     Q_OBJECT
@@ -18,8 +16,6 @@ class CurrentWeather : public Weather
     Q_PROPERTY(QDateTime lastupdateValue MEMBER lastupdateValue NOTIFY updated_inh)
 public:
     explicit CurrentWeather(QObject *parent = 0);
-
-//    bool isInit;
 
     int cityId;
     QString cityName;

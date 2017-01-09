@@ -15,16 +15,12 @@ class LocationManager : public QObject
 public:
     enum { autoLocation = -1 };
     explicit LocationManager(QObject *parent = 0);
-
     void setCurrentPlace(int id);
-
     PlacesModel *getPlacesModel() const;
 
 signals:
     void currentPlaceUpdated(const Place &currentPlace);
     void locationUpdated(const QGeoCoordinate &location);
-
-public slots:
 
 protected:
     Place *currentPlace;

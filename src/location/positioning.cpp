@@ -1,5 +1,11 @@
 #include "positioning.h"
 
+
+
+/**
+ * @brief Класс, реализующий определение местоположения Пользователя по IP-адресу его компьютера.
+ * @param parent Предок согласно объектной иерархии Qt.
+ */
 Positioning::Positioning(QObject *parent) : QObject(parent) {
     networkAccessManager = new QNetworkAccessManager(this);
     connect(networkAccessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
@@ -7,12 +13,19 @@ Positioning::Positioning(QObject *parent) : QObject(parent) {
 
 
 
+/**
+ * @brief Возвращает последнее определенное местоположение.
+ */
 const QGeoCoordinate &Positioning::getLocation() const {
     return location;
 }
 
 
 
+/**
+ * @brief Инициирует определение местоположения.
+ * @return Успешно ли прошла инициализация.
+ */
 bool Positioning::requestRefreshLocation() {
     if (false) { // TODO: Проверить на слишком высокую частоту запросов
         return false;
@@ -22,23 +35,27 @@ bool Positioning::requestRefreshLocation() {
 }
 
 
+
+/**
+ * @brief Разбирает XML, полученный от сервиса определения местоположения и заполняет координаты.
+ * @param xmlData Данные XML.
+ * @param[out] location Местоположение согласно XML.
+ * @return Успех/неуспех.
+ */
 bool Positioning::parseLocationXML(const QByteArray &xmlData, QGeoCoordinate *location) {
     // TODO: Сделать проверки на существование всех элементов и атрибутов, на правильность структуры, на корректность значений; менять объект только в случае успеха.
     double latitude = qQNaN();
     double longitude = qQNaN();
-
     QXmlStreamReader xml(xmlData);
     while (!xml.atEnd()) {
         xml.readNext();
         if (xml.isStartElement()) {
-
             if (xml.name() == "lat") {
                 bool ok = false;
                 double tmp = xml.readElementText().toDouble(&ok);
                 if (ok) {
                     latitude = tmp;
                 }
-
             } else if (xml.name() == "lon") {
                 bool ok = false;
                 double tmp = xml.readElementText().toDouble(&ok);
@@ -46,10 +63,8 @@ bool Positioning::parseLocationXML(const QByteArray &xmlData, QGeoCoordinate *lo
                     longitude = tmp;
                 }
             }
-
         }
     }
-
     if (!xml.hasError() && !qIsNaN(latitude) && !qIsNaN(longitude)) {
         location->setLatitude(latitude);
         location->setLongitude(longitude);
@@ -61,6 +76,9 @@ bool Positioning::parseLocationXML(const QByteArray &xmlData, QGeoCoordinate *lo
 
 
 
+/**
+ * @brief Делает последнее определенное местоположение !isValid.
+ */
 void Positioning::clearLocation() {
     location.setLatitude(qQNaN());
     location.setLongitude(qQNaN());
@@ -68,8 +86,11 @@ void Positioning::clearLocation() {
 
 
 
+/**
+ * @brief Слот-обработчик ответа от сервиса определения местоположения.
+ * @param reply Ответ.
+ */
 void Positioning::replyFinished(QNetworkReply *reply) {
-
     if (!reply->error()) {
         if (parseLocationXML(reply->readAll(), &location)) {
             emit responseRefreshLocation(false, location);
@@ -79,9 +100,5 @@ void Positioning::replyFinished(QNetworkReply *reply) {
     } else {
         emit responseRefreshLocation(true, location);
     }
-
-    //qDebug() << "location done";
-    //qDebug() << location.isValid() << location.latitude() << location.longitude();
-
     reply->deleteLater();
 }

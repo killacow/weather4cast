@@ -14,10 +14,8 @@ class Places : public QObject
 public:
     explicit Places(QObject *parent = 0);
     ~Places();
-
     void readLocalFile();
     void clear();
-
     QHash<int, Place *> getPlaces() const;
 
 signals:

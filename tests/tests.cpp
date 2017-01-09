@@ -10,6 +10,7 @@
 #include "../src/weather/currentweather.h"
 #include "../src/weather/weather.h"
 #include "../src/weather/forecast.h"
+#include "../src/settings.h"
 
 class Tests : public QObject
 {

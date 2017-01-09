@@ -4,6 +4,12 @@
 
 Settings *Settings::self = 0;
 
+
+
+/**
+ * @brief Менеджер настроек.
+ * @param parent Предок согласно объектной иерархии Qt.
+ */
 Settings::Settings(QObject *parent) : QSettings(QGuiApplication::applicationDirPath() + "/settings.ini", QSettings::IniFormat, parent) {
     self = this;
     if (allKeys().isEmpty()) {
@@ -15,14 +21,29 @@ Settings::Settings(QObject *parent) : QSettings(QGuiApplication::applicationDirP
     }
 }
 
+
+
+/**
+ * @brief Статический метод, позволяющий из любой точки приложения добраться до объекта настроек (singleton-style).
+ */
 Settings *Settings::getInstance() {
     return self;
 }
 
+
+
+/**
+ * @brief Преобразует путь к файлу к абсолютному виду.
+ */
 QString Settings::makeAbsolutePath(const QString &path) {
     return makeAbsolutePath(QUrl(path));
 }
 
+
+
+/**
+ * @brief Преобразует путь к файлу к абсолютному виду.
+ */
 QString Settings::makeAbsolutePath(const QUrl &url) {
     QString str = url.toString();
     if (url.isRelative()) {

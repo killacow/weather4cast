@@ -2,30 +2,46 @@
 #include "forecast.h"
 #include "weather.h"
 
+
+
+/**
+ * @brief Класс-модель для списка прогноза погоды.
+ * @param forecast Объект прогноза погоды, который необходимо отображать.
+ * @param parent Предок согласно объектной иерархии Qt.
+ */
 ForecastModel::ForecastModel(Forecast *forecast, QObject *parent)
     : QAbstractListModel(parent)
     , forecast(forecast) {
 
 }
 
+
+
+/**
+ * @brief Возвращает количество элементов (единичных "погод") в прогнозе погоды.
+ * @see QAbstractListModel
+ */
 int ForecastModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
         return 0;
     }
-
     return forecast->forecastWeather.size();
 }
 
+
+
+/**
+ * @brief Возвращает данные о погоде.
+ * @see QAbstractListModel
+ */
 QVariant ForecastModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid()) {
         return QVariant();
     }
-
     int row = index.row();
     if (row >= forecast->forecastWeather.size()) {
         return QVariant();
     }
-
     Weather *w = forecast->forecastWeather.at(row);
     switch (role) {
     case weatherValueRole:
@@ -63,6 +79,12 @@ QVariant ForecastModel::data(const QModelIndex &index, int role) const {
     }
 }
 
+
+
+/**
+ * @brief Формирует список пользовательских ролей данных.
+ * @see QAbstractListModel
+ */
 QHash<int, QByteArray> ForecastModel::roleNames() const {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
     roles[weatherValueRole] = "weatherValue";
@@ -81,12 +103,4 @@ QHash<int, QByteArray> ForecastModel::roleNames() const {
     roles[forecastTimeFromRole] = "forecastTimeFrom";
     roles[forecastTimeToRole] = "forecastTimeTo";
     return roles;
-}
-
-void ForecastModel::raiseLayoutAboutToBeChanged() {
-    emit layoutAboutToBeChanged();
-}
-
-void ForecastModel::raiseLayoutChanged() {
-    emit layoutChanged();
 }

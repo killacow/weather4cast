@@ -36,7 +36,8 @@ SOURCES += \
     ../src/location/locationmanager.cpp \
     ../src/location/places.cpp \
     ../src/location/placesmodel.cpp \
-    ../src/weather/forecastmodel.cpp
+    ../src/weather/forecastmodel.cpp \
+    ../src/settings.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
@@ -52,5 +53,6 @@ HEADERS += \
     ../src/location/locationmanager.h \
     ../src/location/places.h \
     ../src/location/placesmodel.h \
-    ../src/weather/forecastmodel.h
+    ../src/weather/forecastmodel.h \
+    ../src/settings.h
 

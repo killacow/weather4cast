@@ -2,11 +2,13 @@ import QtQuick 2.0
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
+/**
+ * Объект - список местоположений.
+ */
 GroupBox {
     title: "Places"
     ColumnLayout {
         anchors.fill: parent
-
         TextField {
             Layout.fillWidth: true
             placeholderText: qsTr("Search")
@@ -14,7 +16,6 @@ GroupBox {
                 list.positionViewAtIndex(placesModel.getIndexByText(text), ListView.Beginning)
             }
         }
-
         ScrollView {
             Layout.fillHeight: true
             Layout.fillWidth: true

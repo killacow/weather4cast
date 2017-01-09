@@ -12,10 +12,6 @@ public:
     static QString makeAbsolutePath(const QUrl &url);
     static QString makeAbsolutePath(const QString &path);
 
-signals:
-
-public slots:
-
 protected:
     static Settings *self;
 };

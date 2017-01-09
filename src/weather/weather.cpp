@@ -1,8 +1,12 @@
 #include "weather.h"
 
-Weather::Weather(QObject *parent) : QObject(parent) {
-    //    isInit = false;
 
+
+/**
+ * @brief Класс-контейнер, хранящий информацию о погоде.
+ * @param parent Предок согласно объектной иерархии Qt.
+ */
+Weather::Weather(QObject *parent) : QObject(parent) {
     weatherNumber = 0;
     precipitationValue = 0;
     windDirectionValue = 0;

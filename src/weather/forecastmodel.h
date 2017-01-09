@@ -35,13 +35,6 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual QHash<int, QByteArray> roleNames() const;
 
-    void raiseLayoutAboutToBeChanged();
-    void raiseLayoutChanged();
-
-signals:
-
-public slots:
-
 protected:
     Forecast *forecast;
 };

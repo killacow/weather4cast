@@ -40,9 +40,7 @@ protected:
     Place currentPlace;
     CurrentWeather *currentWeather;
     Forecast *forecast;
-
     QNetworkAccessManager *networkAccessManager;
-
     void timerEvent(QTimerEvent *event);
 
 protected slots:

@@ -3,19 +3,31 @@
 #include "places.h"
 #include "locationmanager.h"
 
-// FIXME: Нужно отладить механизм обновления позиции на карте при первом обновлении.
+// TODO: Нужно отладить механизм обновления позиции на карте при первом обновлении.
 
+
+
+/**
+ * @brief Класс-модель для списка мест (местоположений, городов).
+ * @param locationManager Главный геолокационный объект.
+ * @param places Менеджер списка мест.
+ * @param parent Предок согласно объектной иерархии Qt.
+ */
 PlacesModel::PlacesModel(LocationManager *locationManager, Places *places, QObject *parent)
     : QAbstractListModel(parent)
     , locationManager(locationManager)
     , places(places){
-//    proxyModel = new QSortFilterProxyModel(this);
     connect(places, SIGNAL(updated()), this, SLOT(updated()));
     placeList.append(NULL);
 }
 
+
+
+/**
+ * @brief Метод вызывается при выборе Пользователем местоположения из списка и транслирует это местоположение LocationManager'у.
+ * @param index Индекс выбранного Пользователем местоположения в списке (не имеет ничего общего с его id).
+ */
 void PlacesModel::selectPlace(int index) {
-//    qDebug() << "place" << index;
     int id = LocationManager::autoLocation;
     if (index == 0) {
 
@@ -27,19 +39,29 @@ void PlacesModel::selectPlace(int index) {
     locationManager->setCurrentPlace(id);
 }
 
+
+
+/**
+ * @brief Возвращает количество строк в списке мест.
+ * @see QAbstractListModel
+ */
 int PlacesModel::rowCount(const QModelIndex &parent) const {
     if (parent.isValid()) {
         return 0;
     }
-
     return placeList.size();
 }
 
+
+
+/**
+ * @brief Возвращает текст, отображаемый в каждом элементе списка мест.
+ * @see QAbstractListModel
+ */
 QVariant PlacesModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid()) {
         return QVariant();
     }
-
     switch (role) {
     case Qt::DisplayRole: {
         int row = index.row();
@@ -55,8 +77,16 @@ QVariant PlacesModel::data(const QModelIndex &index, int role) const {
     default:
         return QVariant();
     }
+    return QVariant();
 }
 
+
+
+/**
+ * @brief Позволяет по началу названия места узнать его индекс в списке.
+ * @param text Начало названия места.
+ * @return Индекс в списке. Если не найден - 0.
+ */
 int PlacesModel::getIndexByText(QString text) {
     if (text.isEmpty()) {
         return 0;
@@ -71,6 +101,11 @@ int PlacesModel::getIndexByText(QString text) {
     return 0;
 }
 
+
+
+/**
+ * @brief Слот-обработчик сигнала о том что список мест был обновлен.
+ */
 void PlacesModel::updated() {
     emit layoutAboutToBeChanged();
     placeList.clear();

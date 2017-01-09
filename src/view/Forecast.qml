@@ -3,7 +3,9 @@ import QtQuick.Controls 1.4
 import QtQml 2.2
 import QtQuick.Layouts 1.3
 
-
+/**
+ * Объект, отображающий прогноз погоды.
+ */
 GroupBox {
     title: "Forecast: " + locationName + ", " + locationCountry
     property string locationName: forecast.locationName
